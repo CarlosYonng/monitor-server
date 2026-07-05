@@ -1,6 +1,7 @@
 apiVersion: 1
 
 datasources:
+  # Grafana 内部通过 Compose 服务名访问 Prometheus，不需要暴露宿主机地址。
   - name: Prometheus
     uid: prometheus
     type: prometheus

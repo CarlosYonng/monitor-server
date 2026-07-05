@@ -1,38 +1,44 @@
 {
   "uid": "ai-agent-portfolio-rag",
-  "title": "AI Agent Portfolio Chat and RAG",
+  "title": "AI Agent Portfolio 聊天与 RAG",
+  "description": "用于观察智能体问答、RAG 检索、空召回、召回片段和答案引用数量。",
   "schemaVersion": 39,
-  "version": 1,
+  "version": 2,
   "refresh": "15s",
   "tags": ["ai-agent-portfolio", "rag"],
   "panels": [
     {
       "type": "timeseries",
       "title": "AI /api/agent/ask QPS",
+      "description": "按状态统计智能体问答接口每秒请求量。",
       "gridPos": {"x": 0, "y": 0, "w": 8, "h": 8},
       "targets": [{"refId": "A", "expr": "sum(rate(portfolio_agent_ask_total[1m])) by (status)"}]
     },
     {
       "type": "timeseries",
-      "title": "RAG Retrieve Latency p95",
+      "title": "RAG 检索 p95 延迟",
+      "description": "展示 RAG 检索 95 分位耗时，用于发现向量库或图谱检索变慢。",
       "gridPos": {"x": 8, "y": 0, "w": 8, "h": 8},
       "targets": [{"refId": "A", "expr": "histogram_quantile(0.95, sum(rate(portfolio_rag_retrieve_duration_seconds_bucket[5m])) by (le))"}]
     },
     {
       "type": "timeseries",
-      "title": "Empty Retrieval Rate",
+      "title": "RAG 空召回率",
+      "description": "展示 RAG 检索没有返回可用上下文的比例。",
       "gridPos": {"x": 16, "y": 0, "w": 8, "h": 8},
       "targets": [{"refId": "A", "expr": "sum(rate(portfolio_rag_retrieval_empty_total[5m])) / clamp_min(sum(rate(portfolio_rag_retrieve_total[5m])), 1)"}]
     },
     {
       "type": "timeseries",
-      "title": "Retrieved Chunks",
+      "title": "召回片段数",
+      "description": "展示每次 RAG 检索召回片段数量的 95 分位值。",
       "gridPos": {"x": 0, "y": 8, "w": 12, "h": 8},
       "targets": [{"refId": "A", "expr": "histogram_quantile(0.95, sum(rate(portfolio_rag_retrieved_chunks_bucket[5m])) by (le))"}]
     },
     {
       "type": "timeseries",
-      "title": "Answer Citation Count",
+      "title": "答案引用数量",
+      "description": "展示回答中引用来源数量的 95 分位值，用于观察答案可追溯性。",
       "gridPos": {"x": 12, "y": 8, "w": 12, "h": 8},
       "targets": [{"refId": "A", "expr": "histogram_quantile(0.95, sum(rate(portfolio_rag_answer_citation_count_bucket[5m])) by (le))"}]
     }

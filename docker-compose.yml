@@ -1,5 +1,6 @@
 services:
   prometheus:
+    # Prometheus 只负责定时拉取各项目服务暴露的指标，不维护告警规则。
     image: ${PROMETHEUS_IMAGE:-prom/prometheus:latest}
     container_name: monitor-prometheus
     ports:
@@ -9,14 +10,16 @@ services:
       - "--storage.tsdb.path=/prometheus"
       - "--web.enable-lifecycle"
     extra_hosts:
+      # 让容器可以访问宿主机上单独启动的 Java 后端、AI 服务和 incident-copilot。
       - "host.docker.internal:host-gateway"
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - ./prometheus/rules/portfolio-alerts.yml:/etc/prometheus/rules/portfolio-alerts.yml:ro
+      # 整个 prometheus 目录以只读方式挂载，包含主配置和 projects 树形目标配置。
+      - ./prometheus:/etc/prometheus:ro
       - prometheus_data:/prometheus
     restart: unless-stopped
 
   grafana:
+    # Grafana 负责展示仪表盘、计算告警规则，并把告警通过 webhook 推送给 ai-incident-copilot。
     image: ${GRAFANA_IMAGE:-grafana/grafana-oss:latest}
     container_name: monitor-grafana
     depends_on:
@@ -25,6 +28,7 @@ services:
     ports:
       - "${GRAFANA_PORT:-3001}:3000"
     environment:
+      # 默认账号仅用于本地开发，生产环境请在 .env 中覆盖。
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
       GF_USERS_ALLOW_SIGN_UP: "false"
@@ -32,6 +36,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
+      # provisioning 目录包含数据源、仪表盘、告警和通知策略的自动装载配置。
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
       - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
       - grafana_data:/var/lib/grafana

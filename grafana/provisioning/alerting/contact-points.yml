@@ -1,6 +1,7 @@
 apiVersion: 1
 
 contactPoints:
+  # Grafana 告警通知入口，目标地址由 .env 中的 INCIDENT_COPILOT_GRAFANA_WEBHOOK_URL 控制。
   - orgId: 1
     name: incident-copilot-grafana-webhook
     receivers:
@@ -9,5 +10,5 @@ contactPoints:
         settings:
           url: ${INCIDENT_COPILOT_GRAFANA_WEBHOOK_URL}
           httpMethod: POST
-          title: ai-agent-portfolio alert
-          message: Real Grafana alert generated from ai-agent-portfolio metrics.
+          title: ai-agent-portfolio 告警
+          message: 来自 ai-agent-portfolio 指标的 Grafana 真实告警。

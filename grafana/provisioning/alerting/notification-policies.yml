@@ -1,6 +1,7 @@
 apiVersion: 1
 
 policies:
+  # 所有 Grafana 告警默认发送到 incident-copilot webhook，并按告警名、服务和端点聚合。
   - orgId: 1
     receiver: incident-copilot-grafana-webhook
     group_by:

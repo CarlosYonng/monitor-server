@@ -4,6 +4,7 @@ groups:
   - orgId: 1
     name: ai-agent-portfolio-alerts
     folder: ai-agent-portfolio
+    # Grafana 托管告警规则：本项目唯一的告警规则来源，并通过 webhook 通知 incident-copilot。
     interval: 30s
     rules:
       - uid: portfolio-ai-service-timeout
@@ -56,8 +57,8 @@ groups:
           p95_latency: '3'
           affected_requests: '10'
         annotations:
-          summary: ai-agent-portfolio chat messages are timing out while calling ai-service
-          description: Real Grafana alert generated from Java backend -> ai-service metrics.
+          summary: ai-agent-portfolio 调用 ai-service 处理聊天消息时出现超时
+          description: 由 Java 后端到 ai-service 的真实指标触发的 Grafana 告警。
 
       - uid: portfolio-llm-provider-error
         title: PortfolioLlmProviderError
@@ -97,8 +98,8 @@ groups:
           error_rate: '0.02'
           affected_requests: '10'
         annotations:
-          summary: portfolio-ai-service LLM provider calls are failing or throttled
-          description: LLM provider timeout/rate-limit/5xx observed from real model_client metrics.
+          summary: portfolio-ai-service 调用 LLM 服务商失败或被限流
+          description: 从真实 model_client 指标观察到 LLM 超时、限流或 5xx 错误。
 
       - uid: portfolio-rag-retrieval-empty
         title: PortfolioRagRetrievalEmptySpike
@@ -138,8 +139,8 @@ groups:
           error_rate: '0.10'
           affected_requests: '10'
         annotations:
-          summary: portfolio RAG retrieval returned no usable citations for many requests
-          description: Qdrant and GraphRAG produced no usable context.
+          summary: portfolio RAG 检索在多次请求中没有返回可用引用
+          description: Qdrant 和 GraphRAG 未产出可用上下文。
 
       - uid: portfolio-qdrant-unavailable
         title: PortfolioQdrantUnavailable
@@ -179,8 +180,8 @@ groups:
           error_rate: '0.02'
           affected_requests: '10'
         annotations:
-          summary: portfolio-ai-service Qdrant search is unavailable or slow
-          description: Vector retrieval is degraded.
+          summary: portfolio-ai-service 的 Qdrant 检索不可用或变慢
+          description: 向量检索能力已降级。
 
       - uid: portfolio-graphrag-fallback-failure
         title: PortfolioGraphRagFallbackFailure
@@ -220,8 +221,8 @@ groups:
           error_rate: '0.02'
           affected_requests: '3'
         annotations:
-          summary: portfolio GraphRAG fallback is failing or not producing graph context
-          description: Neo4j fallback query failure or empty graph context observed.
+          summary: portfolio GraphRAG fallback 失败或未产出图谱上下文
+          description: 观察到 Neo4j fallback 查询失败或图谱上下文为空。
 
       - uid: portfolio-knowledge-ingestion-failure
         title: PortfolioKnowledgeIngestionFailure
@@ -260,5 +261,5 @@ groups:
           severity: P2
           affected_requests: '1'
         annotations:
-          summary: ai-agent-portfolio knowledge ingestion failed
-          description: Upload, script execution, embedding, Qdrant upsert, Neo4j write, or MySQL status update failed.
+          summary: ai-agent-portfolio 知识入库失败
+          description: 上传、脚本执行、向量化、Qdrant 写入、Neo4j 写入或 MySQL 状态更新失败。

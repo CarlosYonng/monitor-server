@@ -1,44 +1,51 @@
 {
   "uid": "ai-agent-portfolio-dependencies",
-  "title": "AI Agent Portfolio Dependencies",
+  "title": "AI Agent Portfolio 依赖服务",
+  "description": "用于观察 Qdrant、Neo4j、LLM、Embedding、Redis 和知识入库等外部依赖的异常情况。",
   "schemaVersion": 39,
-  "version": 1,
+  "version": 2,
   "refresh": "15s",
   "tags": ["ai-agent-portfolio", "dependencies"],
   "panels": [
     {
       "type": "timeseries",
-      "title": "Qdrant Search Error Rate",
+      "title": "Qdrant 检索错误率",
+      "description": "展示向量检索请求的错误占比，用于判断 Qdrant 是否异常。",
       "gridPos": {"x": 0, "y": 0, "w": 8, "h": 8},
       "targets": [{"refId": "A", "expr": "sum(rate(portfolio_qdrant_search_total{status=\"error\"}[5m])) / clamp_min(sum(rate(portfolio_qdrant_search_total[5m])), 1)"}]
     },
     {
       "type": "timeseries",
-      "title": "Neo4j GraphRAG Error Rate",
+      "title": "Neo4j GraphRAG 错误率",
+      "description": "展示图谱查询请求的错误占比，用于判断 GraphRAG fallback 是否异常。",
       "gridPos": {"x": 8, "y": 0, "w": 8, "h": 8},
       "targets": [{"refId": "A", "expr": "sum(rate(portfolio_neo4j_query_total{status=\"error\"}[5m])) / clamp_min(sum(rate(portfolio_neo4j_query_total[5m])), 1)"}]
     },
     {
       "type": "timeseries",
-      "title": "LLM Provider Error Rate",
+      "title": "LLM 服务商错误率",
+      "description": "展示大模型调用错误占比，覆盖超时、限流和服务端错误等场景。",
       "gridPos": {"x": 16, "y": 0, "w": 8, "h": 8},
       "targets": [{"refId": "A", "expr": "sum(rate(portfolio_llm_requests_total{status=\"error\"}[5m])) / clamp_min(sum(rate(portfolio_llm_requests_total[5m])), 1)"}]
     },
     {
       "type": "timeseries",
-      "title": "Embedding Provider Error Rate",
+      "title": "Embedding 服务商错误率",
+      "description": "展示向量化服务调用错误占比，用于定位查询或入库路径中的 embedding 问题。",
       "gridPos": {"x": 0, "y": 8, "w": 8, "h": 8},
       "targets": [{"refId": "A", "expr": "sum(rate(portfolio_embedding_requests_total{status=\"error\"}[5m])) / clamp_min(sum(rate(portfolio_embedding_requests_total[5m])), 1)"}]
     },
     {
       "type": "timeseries",
-      "title": "Redis Operation Error Rate",
+      "title": "Redis 操作错误率",
+      "description": "展示缓存、限流、去重、黑名单和分布式锁等 Redis 操作的错误占比。",
       "gridPos": {"x": 8, "y": 8, "w": 8, "h": 8},
       "targets": [{"refId": "A", "expr": "sum(rate(portfolio_redis_operations_total{status=\"error\"}[5m])) / clamp_min(sum(rate(portfolio_redis_operations_total[5m])), 1)"}]
     },
     {
       "type": "timeseries",
-      "title": "Knowledge Ingestion Failures",
+      "title": "知识入库失败数",
+      "description": "按入库阶段和错误类型统计最近 5 分钟的知识入库失败次数。",
       "gridPos": {"x": 16, "y": 8, "w": 8, "h": 8},
       "targets": [{"refId": "A", "expr": "sum(increase(portfolio_kb_ingestion_failures_total[5m])) by (stage, error_type)"}]
     }
