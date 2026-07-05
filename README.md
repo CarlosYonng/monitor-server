@@ -75,16 +75,17 @@ prometheus/
   projects/
     ai-agent-portfolio/
       backend-java/
-        targets.yml
+        scrape.yml
       ai-service/
-        targets.yml
+        scrape.yml
 ```
 
-新增项目或服务时，只需要按 `prometheus/projects/<项目名>/<服务名>/targets.yml` 新增目标文件。每个目标文件声明 `targets`、`project`、`service`、`component`、`metrics_path` 和 `scrape_job`，Prometheus 会通过 `file_sd_configs` 自动发现。
+新增项目或服务时，只需要按 `prometheus/projects/<项目名>/<服务名>/scrape.yml` 新增抓取配置。每个服务文件是一段完整的 Prometheus `scrape_config`，声明 `job_name`、`metrics_path`、`targets`、`project`、`service` 和 `component`。容器启动时会由 `prometheus/build-config.sh` 合并这些文件，生成 Prometheus 运行时配置。
 
 ## 关键配置
 
 - Prometheus 主抓取配置: `prometheus/prometheus.yml`
+- Prometheus 运行时配置生成脚本: `prometheus/build-config.sh`
 - Prometheus 多项目目标配置: `prometheus/projects/`
 - Grafana 数据源配置: `grafana/provisioning/datasources/prometheus.yml`
 - Grafana 仪表盘自动装载配置: `grafana/provisioning/dashboards/dashboards.yml`

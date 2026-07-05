@@ -1,0 +1,10 @@
+# ai-agent-portfolio AI 服务：Python/FastAPI 暴露的 Prometheus 指标。
+- job_name: ai-agent-portfolio-ai-service
+  metrics_path: /metrics
+  static_configs:
+    - targets:
+        - host.docker.internal:8001
+      labels:
+        project: ai-agent-portfolio
+        service: portfolio-ai-service
+        component: ai-service

@@ -1,21 +1,3 @@
 global:
   # Prometheus 只负责抓取指标；告警规则、通知策略和 webhook 推送统一交给 Grafana 管理。
   scrape_interval: 15s
-
-scrape_configs:
-  # 多项目统一抓取入口：每个服务在 prometheus/projects/<项目>/<服务>/targets.yml 中声明。
-  - job_name: monitored-services
-    file_sd_configs:
-      - files:
-          - /etc/prometheus/projects/*/*/targets.yml
-        refresh_interval: 30s
-    relabel_configs:
-      # 每个服务可以在 targets.yml 中单独声明指标路径，例如 /metrics 或 /actuator/prometheus。
-      - source_labels: [metrics_path]
-        target_label: __metrics_path__
-      # 将目标文件中的 scrape_job 提升为 Prometheus 的 job 标签，便于 Targets 页面按服务区分。
-      - source_labels: [scrape_job]
-        target_label: job
-      # metrics_path 与 scrape_job 只是发现配置字段，不写入最终时序标签。
-      - regex: metrics_path|scrape_job
-        action: labeldrop

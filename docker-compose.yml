@@ -5,10 +5,9 @@ services:
     container_name: monitor-prometheus
     ports:
       - "${PROMETHEUS_PORT:-9090}:9090"
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--storage.tsdb.path=/prometheus"
-      - "--web.enable-lifecycle"
+    entrypoint:
+      - /bin/sh
+      - /etc/prometheus/build-config.sh
     extra_hosts:
       # 让容器可以访问宿主机上单独启动的 Java 后端、AI 服务和 incident-copilot。
       - "host.docker.internal:host-gateway"

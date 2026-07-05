@@ -1,0 +1,10 @@
+# ai-agent-portfolio Java 后端：Micrometer 暴露的 Spring Boot Actuator 指标。
+- job_name: ai-agent-portfolio-backend-java
+  metrics_path: /actuator/prometheus
+  static_configs:
+    - targets:
+        - host.docker.internal:8081
+      labels:
+        project: ai-agent-portfolio
+        service: ai-agent-portfolio
+        component: backend-java
