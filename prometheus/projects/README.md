@@ -21,6 +21,7 @@ prometheus/projects/
         - host.docker.internal:8081
       labels:
         project: example-project
+        application: example-project
         service: example-service
         component: backend
 ```
@@ -31,5 +32,6 @@ prometheus/projects/
 - `metrics_path`: 指标路径，例如 `/metrics` 或 `/actuator/prometheus`。
 - `targets`: Prometheus 实际抓取地址，可以配置多个实例。
 - `project`: 项目名称，用于查询和分组。
+- `application`: 应用名称，兼容常见 Micrometer/JVM Grafana 模板的应用变量。
 - `service`: 服务名称，用于区分同一项目下的不同服务。
 - `component`: 服务组件或运行时类型。

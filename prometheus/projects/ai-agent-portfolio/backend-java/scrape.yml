@@ -6,5 +6,6 @@
         - host.docker.internal:8081
       labels:
         project: ai-agent-portfolio
+        application: ai-agent-portfolio
         service: ai-agent-portfolio
         component: backend-java

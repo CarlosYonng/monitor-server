@@ -26,8 +26,8 @@ ai-incident-copilot /api/alerts/grafana
 1. 启动被监控项目 `ai-agent-portfolio`，确认指标端点可访问：
 
 ```bash
-curl http://localhost:8080/actuator/prometheus
-curl http://localhost:8000/metrics
+curl http://localhost:8081/actuator/prometheus
+curl http://localhost:8001/metrics
 ```
 
 2. 启动 `ai-incident-copilot`，确认 Grafana webhook 入站接口可访问：
